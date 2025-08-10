@@ -4,19 +4,38 @@ AI-powered arbitrage platform for luxury jewelry and watches.
 
 ## Getting Started
 
+Both frontend and backend use pnpm for package management.
+
 ### Frontend Development
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) to view the frontend.
 
 ### Backend Development
 
 ```bash
 cd backend
-# Backend setup instructions will be added here
+pnpm install
+pnpm dev
+```
+
+The backend API will run on [http://localhost:3001](http://localhost:3001).
+
+### Development Workflow
+
+Run both simultaneously:
+
+```bash
+# Terminal 1 - Frontend
+cd frontend && pnpm dev
+
+# Terminal 2 - Backend  
+cd backend && pnpm dev
 ```
 
 ## Project Structure
