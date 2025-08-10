@@ -152,9 +152,9 @@ export function InteractiveGridPattern({
         const isDark = theme === 'dark';
         if (isDark) {
           if (isHovered && allowInteractive) {
-            style.fill = '#a855f7'; // Purple for dark mode
+            style.fill = '#60a5fa'; // Light blue for dark mode
           } else if (isInTrail && allowInteractive) {
-            style.fill = '#a855f7'; // Purple for dark mode
+            style.fill = '#60a5fa'; // Light blue for dark mode
           }
         }
         

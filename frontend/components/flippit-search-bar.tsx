@@ -191,7 +191,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
         .dark .animated-border {
           background: 
             linear-gradient(rgb(30 41 59), rgb(30 41 59)) padding-box,
-            conic-gradient(from var(--angle), #3b82f620 0deg, #3b82f640 90deg, #3b82f6 180deg, #3b82f640 270deg, #3b82f620 360deg) border-box;
+            conic-gradient(from var(--angle), #60a5fa20 0deg, #60a5fa40 90deg, #60a5fa 180deg, #60a5fa40 270deg, #60a5fa20 360deg) border-box;
         }
         
         @keyframes rotate {

@@ -12,7 +12,7 @@ export default function Home() {
           width={40}
           height={40}
           squares={[48, 32]}
-          squaresClassName="hover:fill-purple-500/60 dark:hover:fill-purple-400/60 transition-all duration-200"
+          squaresClassName="hover:fill-blue-500/60 dark:hover:fill-blue-400/60 transition-all duration-200"
           allowInteractive={true}
         />
       </div>
