@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * InteractiveGridPattern is a component that renders a grid pattern with interactive squares.
@@ -38,9 +38,39 @@ export function InteractiveGridPattern({
 }: InteractiveGridPatternProps) {
   const [horizontal, vertical] = squares;
   const [hoveredSquare, setHoveredSquare] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  // Track cursor globally so the grid reacts even when it's behind content
+  useEffect(() => {
+    if (!allowInteractive) return;
+    
+    function handleMove(event: MouseEvent) {
+      const svg = svgRef.current;
+      if (!svg) return;
+      
+      const rect = svg.getBoundingClientRect();
+      const localX = event.clientX - rect.left;
+      const localY = event.clientY - rect.top;
+
+      // If cursor is outside the svg bounds, clear highlight
+      if (localX < 0 || localY < 0 || localX >= rect.width || localY >= rect.height) {
+        setHoveredSquare(null);
+        return;
+      }
+
+      const col = Math.floor(localX / width);
+      const row = Math.floor(localY / height);
+      const index = row * horizontal + col;
+      setHoveredSquare(index);
+    }
+
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [allowInteractive, width, height, horizontal, vertical]);
 
   return (
     <svg
+      ref={svgRef}
       width={width * horizontal}
       height={height * vertical}
       className={cn(
@@ -62,7 +92,7 @@ export function InteractiveGridPattern({
             className={cn(
               "stroke-gray-400/30 dark:stroke-gray-500/30 transition-all duration-200 ease-in-out [&:not(:hover)]:duration-700",
               hoveredSquare === index && allowInteractive
-                ? "fill-blue-500/25 dark:fill-purple-400/25"
+                ? "fill-blue-500/60 dark:fill-purple-400/60"
                 : "fill-transparent",
               squaresClassName,
             )}
