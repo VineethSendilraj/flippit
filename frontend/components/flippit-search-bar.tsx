@@ -200,7 +200,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
           }
         }
       `}</style>
-      <div className="max-w-2xl mx-auto relative">
+      <div className="max-w-2xl mx-auto relative search-container">
         {/* Search Input */}
         <div className="relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-transparent focus-within:border-transparent transition-colors duration-200 shadow-lg animated-border dark:shadow-slate-700/50">
           <div className="flex items-center gap-4 p-4">
@@ -254,7 +254,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
         {/* Filters Row */}
         <div className="mt-4 flex items-center justify-center gap-3">
           {/* Region Filter */}
-          <div className="relative">
+          <div className="relative filter-dropdown">
             <button
               onClick={() => setShowRegionDropdown(!showRegionDropdown)}
               className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg text-sm font-medium transition-colors duration-200 border border-gray-200 dark:border-slate-600"
@@ -288,7 +288,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
           </div>
 
           {/* Budget Filter */}
-          <div className="relative">
+          <div className="relative filter-dropdown">
             <button
               onClick={() => setShowBudgetDropdown(!showBudgetDropdown)}
               className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg text-sm font-medium transition-colors duration-200 border border-gray-200 dark:border-slate-600"
