@@ -1,11 +1,8 @@
 import type { RetailerData } from "@/types/retailer"
 
 function getPerplexityApiKey(): string {
-  const key = process.env.PERPLEXITY_API_KEY
-  if (!key) {
-    throw new Error("Missing PERPLEXITY_API_KEY environment variable")
-  }
-  return key
+
+  return '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'
 }
 
 // Helper function to generate a fake NYC phone number
