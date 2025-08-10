@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Search, X, MapPin, DollarSign, ChevronDown } from "lucide-react"
+import { Search, X, MapPin, DollarSign, ChevronDown, ArrowRight } from "lucide-react"
 
 interface SearchFilters {
   query: string
@@ -12,10 +12,11 @@ interface SearchFilters {
 
 interface FlippitSearchBarProps {
   onSearch: (filters: SearchFilters) => void
+  onSubmit?: () => void
   placeholder?: string
 }
 
-const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, brands, opportunities..." }: FlippitSearchBarProps) => {
+const FlippitSearchBar = ({ onSearch, onSubmit, placeholder = "Search for luxury items, brands, opportunities..." }: FlippitSearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
@@ -146,6 +147,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
         } else if (searchQuery.trim()) {
           setShowSuggestions(false)
           updateFilters(searchQuery)
+          onSubmit?.()
         }
         break
       case 'Escape':
@@ -204,10 +206,6 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
         {/* Search Input */}
         <div className="relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-transparent focus-within:border-transparent transition-colors duration-200 shadow-lg animated-border dark:shadow-slate-700/50">
           <div className="flex items-center gap-4 p-4">
-            <div className="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0">
-              <Search className="w-4 h-4 text-gray-400 dark:text-gray-300" />
-            </div>
-            
             <input
               type="text"
               value={searchQuery}
@@ -218,20 +216,23 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
               autoComplete="off"
             />
             
-            {searchQuery && (
-              <button
-                onClick={clearSearch}
-                className="w-8 h-8 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-full flex items-center justify-center transition-colors duration-200 flex-shrink-0"
-              >
-                <X className="w-4 h-4 text-gray-400 dark:text-gray-300" />
-              </button>
-            )}
+            <button
+              onClick={onSubmit}
+              disabled={!searchQuery.trim()}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+                searchQuery.trim() 
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg scale-100' 
+                  : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-gray-500 scale-95 opacity-60'
+              }`}
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
         {/* Autocomplete Suggestions */}
         {showSuggestions && filteredSuggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden border-t-0 rounded-t-none">
             {filteredSuggestions.map((suggestion, index) => (
               <button
                 key={suggestion}

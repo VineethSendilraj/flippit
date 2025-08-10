@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname, useSearchParams } from "next/navigation"
 import { Clock, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -9,6 +10,7 @@ import { getArbitrageSearches } from "@/lib/supabase"
 import type { ArbitrageSearch } from "@/types/retailer"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ThemeToggleInline } from "@/components/theme-toggle-inline"
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -35,10 +37,11 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-72 flex-col p-4">
       <div className="flex h-full flex-col rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/20 dark:border-slate-700/50 shadow-xl">
-        <div className="flex items-center px-6 py-4">
+        <div className="flex items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">Flippit</h1>
           </Link>
+          <ThemeToggleInline />
         </div>
         <div className="px-4 pb-4">
           <Link href="/" className="w-full">
@@ -83,6 +86,48 @@ export function Sidebar() {
             )}
           </div>
         </ScrollArea>
+        
+        {/* Powered By at Bottom */}
+        <div className="p-4 border-t border-gray-200 dark:border-slate-700">
+          <div className="flex items-center justify-center">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-full px-3 py-1.5 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center -space-x-1">
+                  <div className="w-4 h-4 rounded-full overflow-hidden border border-white bg-white z-30">
+                    <Image 
+                      src="/logos/openai.png" 
+                      alt="OpenAI Logo" 
+                      width={16} 
+                      height={16}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-4 h-4 rounded-full overflow-hidden border border-white z-20">
+                    <Image 
+                      src="/logos/claude.webp" 
+                      alt="Claude Logo" 
+                      width={16} 
+                      height={16}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-4 h-4 rounded-full overflow-hidden border border-white z-10">
+                    <Image 
+                      src="/logos/perplexity.webp" 
+                      alt="Perplexity Logo" 
+                      width={16} 
+                      height={16}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <span className="text-blue-600 dark:text-blue-400 font-medium text-xs">
+                  Powered by AI
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

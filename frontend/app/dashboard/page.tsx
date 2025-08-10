@@ -8,6 +8,7 @@ import { SellModeView } from "@/components/sell-mode-view"
 import { ModeToggle } from "@/components/mode-toggle"
 import { AutoCallToggle } from "@/components/auto-call-toggle"
 
+
 export default function DashboardPage() {
   const searchParams = useSearchParams()
   const searchId = searchParams.get("id")
@@ -67,22 +68,41 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-gray-200 dark:border-slate-700 px-6 py-4 bg-white dark:bg-slate-900">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Arbitrage Dashboard</h1>
-        <div className="flex items-center gap-4">
-          {lowestPrice.price && (
-            <div className="rounded-lg bg-green-50 dark:bg-green-900/20 px-3 py-2 text-sm border border-green-200 dark:border-green-800">
-              <span className="font-medium text-green-600 dark:text-green-400">
-                Lowest price: ${lowestPrice.price.toLocaleString()} from {lowestPrice.retailer}
-              </span>
+      {/* Header */}
+      <div className="border-b border-gray-200/50 dark:border-slate-700/50">
+        <div className="px-8 py-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Arbitrage Dashboard</h1>
             </div>
-          )}
-          <AutoCallToggle />
-          <ModeToggle mode={mode} setMode={setMode} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {msrpPrice && (
+                <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 text-sm border border-blue-200 dark:border-blue-800">
+                  <span className="font-medium text-blue-600 dark:text-blue-400">
+                    MSRP: ${msrpPrice.toLocaleString()}
+                  </span>
+                </div>
+              )}
+              {lowestPrice.price && (
+                <div className="rounded-lg bg-green-50 dark:bg-green-900/20 px-3 py-1.5 text-sm border border-green-200 dark:border-green-800">
+                  <span className="font-medium text-green-600 dark:text-green-400">
+                    Lowest: ${lowestPrice.price.toLocaleString()} from {lowestPrice.retailer}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <AutoCallToggle />
+              <ModeToggle mode={mode} setMode={setMode} />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-slate-900">
+      {/* Content */}
+      <div className="flex-1 overflow-auto bg-gray-50/50 dark:bg-slate-950/50">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
             <div className="text-center">
@@ -91,7 +111,7 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto p-8">
             {mode === "buy" ? (
               <BuyModeView retailers={retailers} setRetailers={setRetailers} msrpPrice={msrpPrice} />
             ) : (

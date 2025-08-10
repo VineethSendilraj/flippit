@@ -126,21 +126,11 @@ export function BuyModeView({ retailers, setRetailers, msrpPrice }: BuyModeViewP
 
   return (
     <div className="space-y-4">
-      <div className="mb-2 flex items-center gap-2">
-        {typeof msrpPrice === "number" && (
-          <span className="rounded bg-blue-900/20 px-3 py-1 text-sm font-semibold text-blue-400">
-            MSRP: ${msrpPrice.toLocaleString()}
-          </span>
-        )}
-        {typeof lowestPrice === "number" && (
-          <span className="rounded bg-blue-900/20 px-3 py-1 text-sm font-semibold text-blue-400">
-            Lowest Price: ${lowestPrice.toLocaleString()}
-          </span>
-        )}
-        {isCalling && callingCompany && (
-          <span className="ml-2 animate-pulse text-blue-400 font-semibold">Calling {callingCompany}...</span>
-        )}
-      </div>
+      {isCalling && callingCompany && (
+        <div className="mb-2">
+          <span className="animate-pulse text-blue-400 font-semibold">Calling {callingCompany}...</span>
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

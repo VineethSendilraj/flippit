@@ -2,9 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Search } from "lucide-react"
 import FlippitSearchBar from "./flippit-search-bar"
-import { Button } from "@/components/ui/button"
 
 interface SearchFilters {
   query: string
@@ -64,25 +62,7 @@ const FlippitSearchTable = () => {
   return (
     <div className="w-full space-y-6">
       {/* Search Bar */}
-      <FlippitSearchBar onSearch={handleSearch} />
-      
-      {/* Search Button */}
-      <div className="flex justify-center">
-        <Button 
-          onClick={handleSubmit}
-          disabled={!currentFilters.query.trim() || isLoading}
-          className="px-8 py-3 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
-        >
-          {isLoading ? (
-            "Processing..."
-          ) : (
-            <>
-              <Search className="mr-2 h-5 w-5" />
-              Find Arbitrage Opportunities
-            </>
-          )}
-        </Button>
-      </div>
+      <FlippitSearchBar onSearch={handleSearch} onSubmit={handleSubmit} />
     </div>
   )
 }

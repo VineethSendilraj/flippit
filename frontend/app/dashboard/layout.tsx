@@ -1,6 +1,5 @@
 import type React from "react"
 import { Sidebar } from "@/components/sidebar"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { InteractiveGridPattern } from "@/components/interactive-grid-pattern"
 
 export default function DashboardLayout({
@@ -22,13 +21,14 @@ export default function DashboardLayout({
         />
       </div>
 
-      {/* Theme Toggle */}
-      <ThemeToggle />
-
       {/* Main Layout */}
       <div className="flex h-screen w-full relative z-10">
         <Sidebar />
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="flex-1 overflow-auto p-4">
+          <div className="h-full rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/20 dark:border-slate-700/50 shadow-xl overflow-hidden">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   )
