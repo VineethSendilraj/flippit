@@ -1,7 +1,9 @@
 import type { RetailerData } from "@/types/retailer"
 
 function getPerplexityApiKey(): string {
-  const key = process.env.PERPLEXITY_API_KEY
+  const key =
+    process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY ||
+    process.env.PERPLEXITY_API_KEY
   if (!key) {
     throw new Error("Missing PERPLEXITY_API_KEY environment variable")
   }

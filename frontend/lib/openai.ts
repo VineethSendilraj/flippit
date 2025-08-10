@@ -1,5 +1,5 @@
 function getOpenAiApiKey(): string {
-  const key = process.env.OPENAI_API_KEY
+  const key = process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.OPENAI_API_KEY
   if (!key) {
     throw new Error("Missing OPENAI_API_KEY environment variable")
   }

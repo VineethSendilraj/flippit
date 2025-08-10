@@ -2,6 +2,10 @@
 const config = {
   plugins: {
     tailwindcss: {},
+<<<<<<< Updated upstream
+=======
+    autoprefixer: {},
+>>>>>>> Stashed changes
   },
 };
 
