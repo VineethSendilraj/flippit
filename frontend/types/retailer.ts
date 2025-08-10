@@ -16,3 +16,16 @@ export interface ArbitrageSearch {
   query: string
   location: string
 }
+
+// Row shape used across dashboard UI from table `arbitrage_companies`/`retailers`
+export interface Retailer {
+  id: string
+  name: string
+  phone_number: string
+  location: string
+  has_been_called: boolean
+  call_transcript: string
+  call_audio_url?: string
+  call_summary: string
+  lowest_price_offered: number | null
+}

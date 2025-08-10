@@ -1,33 +1,25 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { ExternalLink, ShoppingBag, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import type { Retailer } from "@/types/retailer"
 
 interface SellModeViewProps {
-  retailers: any[]
+  retailers: Retailer[]
   msrpPrice?: number | null
+  searchId: string
 }
 
-export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
+export function SellModeView({ retailers, msrpPrice, searchId }: SellModeViewProps) {
+  const router = useRouter()
   // Find the lowest price among retailers
   const lowestPrice = retailers
     .map(r => r.lowest_price_offered)
-    .filter(p => typeof p === "number")
-    .reduce((min, p) => (min === null || (p !== null && p < min) ? p : min), null as number | null)
+    .filter((p): p is number => typeof p === "number")
+    .reduce((min: number | null, p: number) => (min === null || (p !== null && p < min) ? p : min), null)
 
   // Suggested sell price: 20% above lowest price, fallback to MSRP if no lowest price
   const suggestedSellPrice = lowestPrice ? Math.round(lowestPrice * 1.2) : msrpPrice || null
@@ -87,9 +79,9 @@ export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
             </div>
             <Button 
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={() => {}}
+              onClick={() => router.push(`/listings/ebay?id=${encodeURIComponent(searchId)}`)}
             >
-              Create listing thru API
+              Go to listing page
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -116,9 +108,9 @@ export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
             </div>
             <Button 
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={() => {}}
+              onClick={() => router.push(`/listings/facebook?id=${encodeURIComponent(searchId)}`)}
             >
-              Create listing thru API
+              Go to listing page
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -145,9 +137,9 @@ export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
             </div>
             <Button 
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={() => {}}
+              onClick={() => router.push(`/listings/craigslist?id=${encodeURIComponent(searchId)}`)}
             >
-              Create listing thru API
+              Go to listing page
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

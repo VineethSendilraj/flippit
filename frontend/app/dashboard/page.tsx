@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { getRetailersBySearchId, supabase } from "@/lib/supabase"
+import type { Retailer } from "@/types/retailer"
 import { BuyModeView } from "@/components/buy-mode-view"
 import { SellModeView } from "@/components/sell-mode-view"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -13,7 +14,7 @@ export default function DashboardPage() {
   const searchParams = useSearchParams()
   const searchId = searchParams.get("id")
   const [mode, setMode] = useState<"buy" | "sell">("buy")
-  const [retailers, setRetailers] = useState<any[]>([])
+  const [retailers, setRetailers] = useState<Retailer[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [lowestPrice, setLowestPrice] = useState<{
     price: number | null
@@ -115,7 +116,7 @@ export default function DashboardPage() {
             {mode === "buy" ? (
               <BuyModeView retailers={retailers} setRetailers={setRetailers} msrpPrice={msrpPrice} />
             ) : (
-              <SellModeView retailers={retailers} />
+              <SellModeView retailers={retailers} msrpPrice={msrpPrice} searchId={searchId || ""} />
             )}
           </div>
         )}
