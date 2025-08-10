@@ -13,6 +13,7 @@ interface FlippitOpportunity {
   profit: string
   profitMargin: string
   marketplace: string
+  region: string
   tags: OpportunityTag[]
   description: string
   link: string
@@ -30,6 +31,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$4,300',
     profitMargin: '52%',
     marketplace: 'Chrono24',
+    region: 'ny',
     tags: [
       { name: 'HOT', color: 'red' },
       { name: 'Watches', color: 'blue' },
@@ -50,6 +52,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$7,000',
     profitMargin: '47%',
     marketplace: 'Fashionphile',
+    region: 'ca',
     tags: [
       { name: 'Handbags', color: 'purple' },
       { name: 'Luxury', color: 'blue' },
@@ -69,6 +72,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$350',
     profitMargin: '78%',
     marketplace: 'StockX',
+    region: 'il',
     tags: [
       { name: 'Sneakers', color: 'blue' },
       { name: 'Limited Edition', color: 'red' },
@@ -88,6 +92,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$1,400',
     profitMargin: '50%',
     marketplace: 'Crown & Caliber',
+    region: 'fl',
     tags: [
       { name: 'Watches', color: 'blue' },
       { name: 'Vintage', color: 'yellow' },
@@ -107,6 +112,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$3,300',
     profitMargin: '51%',
     marketplace: 'Rebag',
+    region: 'tx',
     tags: [
       { name: 'Handbags', color: 'purple' },
       { name: 'Luxury', color: 'blue' },
@@ -127,6 +133,7 @@ export const opportunities: FlippitOpportunity[] = [
     profit: '$35,000',
     profitMargin: '41%',
     marketplace: 'Hodinkee Shop',
+    region: 'ny',
     tags: [
       { name: 'HOT', color: 'red' },
       { name: 'Watches', color: 'blue' },

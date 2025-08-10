@@ -6,16 +6,28 @@ import FlippitOpportunityCard from "./flippit-opportunity-card"
 import { opportunities } from "@/data/opportunities"
 import { Grid, List } from "lucide-react"
 
+interface SearchFilters {
+  query: string
+  region: string
+  minBudget: number
+  maxBudget: number
+}
+
 const FlippitSearchTable = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("")
+  const [filters, setFilters] = useState<SearchFilters>({
+    query: "",
+    region: "all",
+    minBudget: 0,
+    maxBudget: 100000
+  })
   const [view, setView] = useState<'list' | 'grid'>('grid')
 
   const filteredOpportunities = useMemo(() => {
     let filtered = opportunities
 
     // Filter by search query (name, brand, description, tags)
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim()
+    if (filters.query.trim()) {
+      const query = filters.query.toLowerCase().trim()
       filtered = filtered.filter(opportunity => 
         opportunity.name.toLowerCase().includes(query) ||
         opportunity.brand.toLowerCase().includes(query) ||
@@ -27,11 +39,22 @@ const FlippitSearchTable = () => {
       )
     }
 
-    return filtered
-  }, [searchQuery])
+    // Filter by budget range
+    filtered = filtered.filter(opportunity => {
+      const currentPrice = parseFloat(opportunity.currentPrice.replace(/[$,]/g, ''))
+      return currentPrice >= filters.minBudget && currentPrice <= filters.maxBudget
+    })
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query)
+    // Filter by region
+    if (filters.region !== "all") {
+      filtered = filtered.filter(opportunity => opportunity.region === filters.region)
+    }
+
+    return filtered
+  }, [filters])
+
+  const handleSearch = (newFilters: SearchFilters) => {
+    setFilters(newFilters)
   }
 
   return (
@@ -69,8 +92,15 @@ const FlippitSearchTable = () => {
 
       {/* Results Count */}
       <div className="text-sm text-gray-600 dark:text-gray-400">
-        {searchQuery ? (
-          <>Showing {filteredOpportunities.length} opportunities for "{searchQuery}"</>
+        {filters.query || filters.region !== "all" || filters.minBudget > 0 || filters.maxBudget < 100000 ? (
+          <>
+            Showing {filteredOpportunities.length} opportunities
+            {filters.query && <> for "{filters.query}"</>}
+            {filters.region !== "all" && <> in {filters.region}</>}
+            {(filters.minBudget > 0 || filters.maxBudget < 100000) && (
+              <> within budget ${filters.minBudget.toLocaleString()} - ${filters.maxBudget.toLocaleString()}</>
+            )}
+          </>
         ) : (
           <>Showing {filteredOpportunities.length} opportunities</>
         )}

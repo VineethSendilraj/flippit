@@ -20,17 +20,17 @@ export default function Home() {
                 </svg>
               </div>
               {/* Anthropic Logo */}
-              <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800">
-                <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 22h4l2-5h8l2 5h4L12 2zm-2.5 11L12 7.5 14.5 13h-5z"/>
-                </svg>
-              </div>
+              <img 
+                src="/logos/claude.webp" 
+                alt="Anthropic Claude" 
+                className="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800 object-cover"
+              />
               {/* Perplexity Logo */}
-              <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800">
-                <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              </div>
+              <img 
+                src="/logos/perplexity.webp" 
+                alt="Perplexity" 
+                className="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800 object-cover"
+              />
             </div>
             Powered by OpenAI, Anthropic & Perplexity
           </div>
