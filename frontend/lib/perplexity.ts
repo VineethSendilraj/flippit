@@ -2,7 +2,7 @@ import type { RetailerData } from "@/types/retailer"
 
 function getPerplexityApiKey(): string {
 
-  return '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'
+  return ''
 }
 
 // Helper function to generate a fake NYC phone number
