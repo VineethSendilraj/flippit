@@ -214,7 +214,7 @@ const FlippitSearchBar = ({ onSearch, placeholder = "Search for luxury items, br
               onChange={(e) => handleSearch(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
-              className="flex-1 text-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none bg-transparent"
+              className="flex-1 text-lg text-gray-900 dark:text-gray-900 placeholder-gray-400 dark:placeholder-gray-500 outline-none bg-transparent"
               autoComplete="off"
             />
             

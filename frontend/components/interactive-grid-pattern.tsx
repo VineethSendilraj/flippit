@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 
 /**
  * InteractiveGridPattern is a component that renders a grid pattern with interactive squares.
@@ -21,6 +22,12 @@ interface InteractiveGridPatternProps extends React.SVGProps<SVGSVGElement> {
   allowInteractive?: boolean;
 }
 
+interface TrailSquare {
+  index: number;
+  timestamp: number;
+  opacity: number;
+}
+
 /**
  * The InteractiveGridPattern component.
  *
@@ -38,7 +45,10 @@ export function InteractiveGridPattern({
 }: InteractiveGridPatternProps) {
   const [horizontal, vertical] = squares;
   const [hoveredSquare, setHoveredSquare] = useState<number | null>(null);
+  const [trailSquares, setTrailSquares] = useState<TrailSquare[]>([]);
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const lastHoveredRef = useRef<number | null>(null);
+  const { theme } = useTheme();
 
   // Track cursor globally so the grid reacts even when it's behind content
   useEffect(() => {
@@ -61,12 +71,50 @@ export function InteractiveGridPattern({
       const col = Math.floor(localX / width);
       const row = Math.floor(localY / height);
       const index = row * horizontal + col;
-      setHoveredSquare(index);
+      
+      // Only update if we moved to a new square
+      if (index !== lastHoveredRef.current) {
+        setHoveredSquare(index);
+        lastHoveredRef.current = index;
+        
+        // Add to trail if it's a new square
+        const now = Date.now();
+        setTrailSquares(prev => {
+          // Remove the current square from trail if it exists
+          const filtered = prev.filter(square => square.index !== index);
+          // Add current square to trail
+          const newTrail = [
+            ...filtered,
+            { index, timestamp: now, opacity: 1 }
+          ];
+          // Keep only last 12 squares and remove old ones
+          return newTrail
+            .filter(square => now - square.timestamp < 1500)
+            .slice(-12);
+        });
+      }
     }
 
     window.addEventListener("mousemove", handleMove);
     return () => window.removeEventListener("mousemove", handleMove);
   }, [allowInteractive, width, height, horizontal, vertical]);
+
+  // Fade out trail squares over time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      setTrailSquares(prev => 
+        prev
+          .map(square => ({
+            ...square,
+            opacity: Math.max(0, 1 - (now - square.timestamp) / 1500)
+          }))
+          .filter(square => square.opacity > 0.05)
+      );
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <svg
@@ -82,6 +130,34 @@ export function InteractiveGridPattern({
       {Array.from({ length: horizontal * vertical }).map((_, index) => {
         const x = (index % horizontal) * width;
         const y = Math.floor(index / horizontal) * height;
+        
+        // Check if this square is in the trail
+        const trailSquare = trailSquares.find(square => square.index === index);
+        const isHovered = hoveredSquare === index;
+        const isInTrail = !!trailSquare && !isHovered;
+        
+        // Calculate style based on state
+        let style: React.CSSProperties = {};
+        let fillClass = "fill-transparent";
+        
+        if (isHovered && allowInteractive) {
+          style.fill = '#3b82f6'; // Blue
+          style.fillOpacity = 0.6;
+        } else if (isInTrail && allowInteractive) {
+          style.fill = '#3b82f6'; // Blue
+          style.fillOpacity = trailSquare.opacity * 0.4; // Fade effect
+        }
+        
+        // Dark mode colors
+        const isDark = theme === 'dark';
+        if (isDark) {
+          if (isHovered && allowInteractive) {
+            style.fill = '#a855f7'; // Purple for dark mode
+          } else if (isInTrail && allowInteractive) {
+            style.fill = '#a855f7'; // Purple for dark mode
+          }
+        }
+        
         return (
           <rect
             key={index}
@@ -90,18 +166,14 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             className={cn(
-              "stroke-gray-400/30 dark:stroke-gray-500/30 transition-all duration-200 ease-in-out [&:not(:hover)]:duration-700",
-              hoveredSquare === index && allowInteractive
-                ? "fill-blue-500/60 dark:fill-purple-400/60"
-                : "fill-transparent",
+              "stroke-gray-400/30 dark:stroke-gray-500/30 transition-all duration-200 ease-in-out",
+              fillClass,
               squaresClassName,
             )}
-            onMouseEnter={
-              allowInteractive ? () => setHoveredSquare(index) : undefined
-            }
-            onMouseLeave={
-              allowInteractive ? () => setHoveredSquare(null) : undefined
-            }
+            style={{
+              ...style,
+              transition: 'fill-opacity 0.2s ease-in-out, fill 0.2s ease-in-out'
+            }}
           />
         );
       })}
