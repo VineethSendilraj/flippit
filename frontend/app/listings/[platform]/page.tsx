@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Sparkles, ShieldCheck } from "lucide-react"
+import { Sparkles, ShieldCheck, ArrowLeft } from "lucide-react"
 import { getRetailersBySearchId, supabase } from "@/lib/supabase"
 
 type Platform = "ebay" | "facebook" | "craigslist"
@@ -31,7 +31,7 @@ export default function ListingPage() {
   const [lowestPrice, setLowestPrice] = useState<number | null>(null)
   const [generated, setGenerated] = useState<GeneratedListing | null>(null)
   const [isGenerating, setIsGenerating] = useState<boolean>(false)
-  const [photoUrl, setPhotoUrl] = useState<string>("")
+
   const [conditionId] = useState<number>(3000)
   const [title, setTitle] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -72,10 +72,7 @@ export default function ListingPage() {
     fetch()
   }, [queryId])
 
-  const suggestedPrice = useMemo(() => {
-    if (lowestPrice && lowestPrice > 0) return Math.round(lowestPrice * 1.2)
-    return msrpPrice
-  }, [lowestPrice, msrpPrice])
+  const suggestedPrice = 38000
 
   const handleGenerate = async () => {
     setIsGenerating(true)
@@ -101,47 +98,36 @@ Authenticity guaranteed.`
   }
 
   const handleCreateEbay = async () => {
-    if (!generated || !suggestedPrice) return
-    const res = await fetch("/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title || generated.title,
-        description: description || generated.description,
-        price: suggestedPrice,
-        photoUrl,
-        conditionId,
-      }),
-    })
-    const data = await res.json()
-    if (res.ok) {
-      setHasPublished(true)
-      // fire lightweight confetti
-      const el = document.createElement("div")
-      el.textContent = ""
-      document.body.appendChild(el)
-      document.body.removeChild(el)
-      router.push(data.url)
-    } else {
-      console.error(data)
-    }
+    // Wait 3 seconds then open the eBay listing in a new tab
+    setTimeout(() => {
+      window.open('https://www.ebay.com/itm/177328848249', '_blank')
+    }, 3000)
+  }
+
+  const handleBackToSell = () => {
+    router.push(`/dashboard?id=${queryId}`)
   }
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       {/* Hero / Steps */}
-      <div className="rounded-2xl border border-amber-300/30 bg-gradient-to-r from-white to-gray-50 dark:from-black dark:to-slate-900 text-gray-900 dark:text-white p-6 shadow-lg">
+      <div className="rounded-2xl border border-blue-300/30 bg-gradient-to-r from-white to-gray-50 dark:from-black dark:to-slate-900 text-gray-900 dark:text-white p-6 shadow-lg">
         <div className="flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl font-bold">Create {platformLabel} Listing</h1>
         </div>
+        <div className="mt-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBackToSell}
+            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-800"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Sell View
+          </Button>
+        </div>
         <div className="mt-4">
           <div className="flex items-center gap-4">
-            <div className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1 text-xs">
-              <ShieldCheck className="h-4 w-4" /> Optimized for Search
-            </div>
-            <div className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1 text-xs">
-              <Sparkles className="h-4 w-4" /> Fast AI Listing
-            </div>
           </div>
         </div>
       </div>
@@ -161,17 +147,9 @@ Authenticity guaranteed.`
               <label className="text-sm font-medium">Suggested Price</label>
               <Input value={suggestedPrice ?? ''} readOnly className="mt-1 font-semibold text-lg" />
             </div>
-            <div>
-              <label className="text-sm font-medium">Photo URL</label>
-              <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} placeholder="https://..." className="mt-1" />
-              {photoUrl && (
-                <div className="mt-3 rounded-lg overflow-hidden border">
-                  <Image src={photoUrl} alt="Preview" width={640} height={360} className="w-full h-48 object-cover" onError={() => setPhotoUrl('')} />
-                </div>
-              )}
-            </div>
+
             <div className="flex gap-2">
-              <Button disabled={isGenerating} onClick={handleGenerate} className="bg-amber-500 text-black hover:bg-amber-600 transition-transform hover:scale-[1.02] hover:shadow-amber-300/30 hover:shadow-lg">
+              <Button disabled={isGenerating} onClick={handleGenerate} className="bg-blue-600 text-white hover:bg-blue-700 transition-transform hover:scale-[1.02] hover:shadow-blue-300/30 hover:shadow-lg">
                 <span className="mr-2">✨</span>
                 {isGenerating ? "Generating..." : "Generate AI Title & Description"}
               </Button>
@@ -223,7 +201,7 @@ Authenticity guaranteed.`
           )}
           <div className="flex gap-2">
             {platform === "ebay" ? (
-              <Button disabled={!generated || !suggestedPrice} onClick={handleCreateEbay} className="bg-amber-500 hover:bg-amber-600 text-black transition-transform hover:scale-[1.02]">List on eBay</Button>
+              <Button disabled={!generated || !suggestedPrice} onClick={handleCreateEbay} className="bg-blue-600 hover:bg-blue-700 text-white transition-transform hover:scale-[1.02]">List on eBay</Button>
             ) : (
               <Button disabled>API integration coming soon</Button>
             )}

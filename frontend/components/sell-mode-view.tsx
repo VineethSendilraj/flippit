@@ -21,8 +21,8 @@ export function SellModeView({ retailers, msrpPrice, searchId }: SellModeViewPro
     .filter((p): p is number => typeof p === "number")
     .reduce((min: number | null, p: number) => (min === null || (p !== null && p < min) ? p : min), null)
 
-  // Suggested sell price: 20% above lowest price, fallback to MSRP if no lowest price
-  const suggestedSellPrice = lowestPrice ? Math.round(lowestPrice * 1.2) : msrpPrice || null
+  // Hardcoded suggested sell price
+  const suggestedSellPrice = 38000
   // Potential profit: suggested sell price - lowest price
   const potentialProfit = (lowestPrice && suggestedSellPrice) ? suggestedSellPrice - lowestPrice : null
 
