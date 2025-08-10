@@ -19,6 +19,7 @@ export default function DashboardPage() {
     retailer: string | null
   }>({ price: null, retailer: null })
   const [msrpPrice, setMsrpPrice] = useState<number | null>(null)
+  const [queryText, setQueryText] = useState<string>("")
 
   useEffect(() => {
     if (!searchId) return
@@ -28,13 +29,16 @@ export default function DashboardPage() {
         setIsLoading(true)
         const [retailersRes, queryRes] = await Promise.all([
           getRetailersBySearchId(searchId),
-          supabase.from("arbitrage_queries").select("msrp_price").eq("id", searchId).single(),
+          supabase.from("arbitrage_queries").select("msrp_price, query_text").eq("id", searchId).single(),
         ])
         setRetailers(retailersRes)
         if (queryRes.data && typeof queryRes.data.msrp_price === "number") {
           setMsrpPrice(queryRes.data.msrp_price)
         } else {
           setMsrpPrice(null)
+        }
+        if (queryRes.data && typeof queryRes.data.query_text === "string") {
+          setQueryText(queryRes.data.query_text)
         }
         // Find the lowest price offered
         const retailerWithLowestPrice = retailersRes
@@ -90,7 +94,7 @@ export default function DashboardPage() {
         ) : mode === "buy" ? (
           <BuyModeView retailers={retailers} setRetailers={setRetailers} msrpPrice={msrpPrice} />
         ) : (
-          <SellModeView retailers={retailers} />
+          <SellModeView retailers={retailers} msrpPrice={msrpPrice} queryText={queryText} />
         )}
       </div>
     </div>

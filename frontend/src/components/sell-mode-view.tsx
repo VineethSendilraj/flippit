@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { toast } from "sonner"
 import { ExternalLink, ShoppingBag, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,9 +22,10 @@ import {
 interface SellModeViewProps {
   retailers: any[]
   msrpPrice?: number | null
+  queryText?: string
 }
 
-export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
+export function SellModeView({ retailers, msrpPrice, queryText }: SellModeViewProps) {
   // Find the lowest price among retailers
   const lowestPrice = retailers
     .map(r => r.lowest_price_offered)
@@ -36,9 +38,47 @@ export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
   const potentialProfit = (lowestPrice && suggestedSellPrice) ? suggestedSellPrice - lowestPrice : null
 
   // Listing template info
-  const listingTitle = "Rolex Day Date 36"
-  const listingDescription = `Selling a Rolex Day Date 36 in good condition. Authentic, gently used luxury watch. Please message for details or more photos.`
+  const listingTitle = (queryText && queryText.trim().length > 0) ? queryText.trim().slice(0, 80) : "Rolex Day Date 36"
+  const listingDescription = `Selling a ${listingTitle} in good condition. Authentic, gently used luxury watch. Please message for details or more photos.`
   const listingCondition = "Good"
+
+  const [ebayLoading, setEbayLoading] = useState(false)
+  const [ebayUrl, setEbayUrl] = useState<string | null>(null)
+
+  async function createEbayListing() {
+    try {
+      setEbayLoading(true)
+      setEbayUrl(null)
+      const title = listingTitle
+      const description = listingDescription
+      const price = suggestedSellPrice
+      // Use a public sample image for demo reliability
+      const photoUrl = "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1200&auto=format&fit=crop"
+
+      const res = await fetch("/api/ebay/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description, price, photoUrl }),
+      })
+
+      const data = await res.json()
+      if (data.ok) {
+        setEbayUrl(data.url)
+        toast.success("Listed on eBay (Sandbox)!")
+      } else {
+        // Surface readable toast; log raw XML for debugging
+        // eslint-disable-next-line no-console
+        console.error(data.raw || data.error)
+        toast.error("eBay listing failed — check console for details.")
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err)
+      toast.error("Unexpected error while creating eBay listing")
+    } finally {
+      setEbayLoading(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -84,14 +124,27 @@ export function SellModeView({ retailers, msrpPrice }: SellModeViewProps) {
                   <br />Price: {suggestedSellPrice ? `$${suggestedSellPrice}` : "-"}
                   <br />Condition: {listingCondition}
                 </div>
-                <Button 
-                  variant="outline" 
-                  className="w-full hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                  onClick={() => {}}
-                >
-                  Create listing thru API
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="flex flex-col gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                    onClick={createEbayListing}
+                    disabled={!suggestedSellPrice || ebayLoading}
+                  >
+                    {ebayLoading ? "Listing..." : "Create listing thru API"}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  {ebayUrl && (
+                    <a
+                      href={ebayUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      View Sandbox Listing
+                    </a>
+                  )}
+                </div>
               </div>
               {/* Facebook Marketplace */}
               <div className="flex flex-col gap-2 border rounded-md p-4">
