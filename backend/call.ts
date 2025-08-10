@@ -100,7 +100,7 @@ app.post('/api/call', async (req: Request, res: Response) => {
       body: JSON.stringify({
         assistantId: '419b4682-1648-4686-8b8c-668a83270b16',
         customer: {
-          number: '+14698805468'
+          number: '+19455239319'
         },
         phoneNumberId: '82126eaa-ed35-4510-b1f2-5ec2b8283729'
       })
