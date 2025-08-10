@@ -6,6 +6,8 @@ import { CheckCircle, Loader2, AlertCircle } from "lucide-react"
 import { fetchArbitrageData, fetchMsrpPrice } from "@/lib/perplexity"
 import { saveArbitrageDataWithMsrp } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { InteractiveGridPattern } from "@/components/interactive-grid-pattern"
 
 export default function LoadingPage() {
   const router = useRouter()
@@ -95,54 +97,72 @@ export default function LoadingPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-800 p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-white">
-            {hasError ? "Processing Error" : "Processing Your Search"}
-          </h1>
-          <p className="mt-2 text-sm text-gray-400">
-            {hasError
-              ? "We encountered an issue while processing your request"
-              : `Finding arbitrage opportunities for ${query} in ${location.replace(/-/g, " ")}`}
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden flex flex-col">
+      {/* Interactive Grid Background */}
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+        <InteractiveGridPattern
+          className="opacity-30 w-screen [mask-image:radial-gradient(ellipse_at_center,_black_0%,_black_25%,_rgba(0,0,0,0.5)_40%,_transparent_75%)]"
+          width={40}
+          height={40}
+          squares={[48, 32]}
+          squaresClassName="hover:fill-blue-500/60 dark:hover:fill-blue-400/60 transition-all duration-200"
+          allowInteractive={true}
+        />
+      </div>
 
-        <div className="space-y-4">
-          {steps.map((step) => (
-            <div
-              key={step.id}
-              className="flex items-center space-x-3 rounded-lg border border-gray-700 bg-gray-800/50 p-4"
-            >
-              {step.error ? (
-                <AlertCircle className="h-6 w-6 text-red-500" />
-              ) : step.completed ? (
-                <CheckCircle className="h-6 w-6 text-green-500" />
-              ) : (
-                <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
-              )}
-              <span className={step.error ? "text-red-400" : step.completed ? "text-white" : "text-gray-400"}>
-                {step.text}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Theme Toggle */}
+      <ThemeToggle />
 
-        {hasError && (
-          <div className="space-y-4">
-            <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4">
-              <p className="text-sm text-red-400">{errorMessage}</p>
-            </div>
-            <div className="flex space-x-2">
-              <Button onClick={handleRetry} className="flex-1">
-                Try Again
-              </Button>
-              <Button onClick={handleGoBack} variant="outline" className="flex-1">
-                Go Back
-              </Button>
-            </div>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {hasError ? "Processing Error" : "Processing Your Search"}
+            </h1>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              {hasError
+                ? "We encountered an issue while processing your request"
+                : `Finding arbitrage opportunities for ${query} in ${location.replace(/-/g, " ")}`}
+            </p>
           </div>
-        )}
+
+          <div className="space-y-4">
+            {steps.map((step) => (
+              <div
+                key={step.id}
+                className="flex items-center space-x-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-4 shadow-lg"
+              >
+                {step.error ? (
+                  <AlertCircle className="h-6 w-6 text-red-500" />
+                ) : step.completed ? (
+                  <CheckCircle className="h-6 w-6 text-green-500" />
+                ) : (
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-500 dark:text-blue-400" />
+                )}
+                <span className={step.error ? "text-red-500 dark:text-red-400" : step.completed ? "text-gray-900 dark:text-white" : "text-gray-600 dark:text-gray-400"}>
+                  {step.text}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {hasError && (
+            <div className="space-y-4">
+              <div className="rounded-lg border border-red-500/20 bg-red-500/10 backdrop-blur-sm p-4">
+                <p className="text-sm text-red-500 dark:text-red-400">{errorMessage}</p>
+              </div>
+              <div className="flex space-x-2">
+                <Button onClick={handleRetry} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+                  Try Again
+                </Button>
+                <Button onClick={handleGoBack} variant="outline" className="flex-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
+                  Go Back
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

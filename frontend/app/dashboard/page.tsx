@@ -60,19 +60,19 @@ export default function DashboardPage() {
   if (!searchId) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-lg text-gray-500">Select a search from the sidebar or start a new search</p>
+        <p className="text-lg text-gray-500 dark:text-gray-400">Select a search from the sidebar or start a new search</p>
       </div>
     )
   }
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b px-6 py-4">
-        <h1 className="text-2xl font-bold">Arbitrage Dashboard</h1>
+      <div className="flex items-center justify-between border-b border-gray-200 dark:border-slate-700 px-6 py-4 bg-white dark:bg-slate-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Arbitrage Dashboard</h1>
         <div className="flex items-center gap-4">
           {lowestPrice.price && (
-            <div className="rounded-md bg-green-900/20 px-3 py-1 text-sm">
-              <span className="font-medium text-green-500">
+            <div className="rounded-lg bg-green-50 dark:bg-green-900/20 px-3 py-2 text-sm border border-green-200 dark:border-green-800">
+              <span className="font-medium text-green-600 dark:text-green-400">
                 Lowest price: ${lowestPrice.price.toLocaleString()} from {lowestPrice.retailer}
               </span>
             </div>
@@ -82,15 +82,22 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-slate-900">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+            <div className="text-center">
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">Loading dashboard data...</p>
+            </div>
           </div>
-        ) : mode === "buy" ? (
-          <BuyModeView retailers={retailers} setRetailers={setRetailers} msrpPrice={msrpPrice} />
         ) : (
-          <SellModeView retailers={retailers} />
+          <div className="max-w-7xl mx-auto">
+            {mode === "buy" ? (
+              <BuyModeView retailers={retailers} setRetailers={setRetailers} msrpPrice={msrpPrice} />
+            ) : (
+              <SellModeView retailers={retailers} />
+            )}
+          </div>
         )}
       </div>
     </div>

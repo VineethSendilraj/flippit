@@ -16,7 +16,7 @@ export function AutoCallToggle() {
         onCheckedChange={setEnabled}
         className={cn(
           "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
-          enabled ? "bg-blue-600" : "bg-gray-200"
+          enabled ? "bg-blue-600 dark:bg-blue-500" : "bg-gray-200 dark:bg-gray-600"
         )}
       >
         <span
@@ -28,7 +28,7 @@ export function AutoCallToggle() {
       </Switch>
       <Label
         htmlFor="auto-call-mode"
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700 dark:text-gray-300"
       >
         Auto Call Mode
       </Label>

@@ -10,11 +10,13 @@ interface ModeToggleProps {
 
 export function ModeToggle({ mode, setMode }: ModeToggleProps) {
   return (
-    <div className="flex rounded-md border p-1">
+    <div className="flex rounded-lg border border-gray-200 dark:border-slate-600 p-1 bg-white dark:bg-slate-800">
       <button
         className={cn(
           "flex items-center gap-1 rounded-md px-3 py-1 text-sm font-medium transition-colors",
-          mode === "buy" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-gray-100",
+          mode === "buy" 
+            ? "bg-blue-600 text-white shadow-sm" 
+            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-slate-700",
         )}
         onClick={() => setMode("buy")}
       >
@@ -24,7 +26,9 @@ export function ModeToggle({ mode, setMode }: ModeToggleProps) {
       <button
         className={cn(
           "flex items-center gap-1 rounded-md px-3 py-1 text-sm font-medium transition-colors",
-          mode === "sell" ? "bg-green-600 text-white" : "text-gray-400 hover:text-gray-100",
+          mode === "sell" 
+            ? "bg-green-600 text-white shadow-sm" 
+            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-slate-700",
         )}
         onClick={() => setMode("sell")}
       >
