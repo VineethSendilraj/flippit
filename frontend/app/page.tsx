@@ -1,14 +1,27 @@
 import FlippitSearchTable from "@/components/flippit-search-table"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { InteractiveGridPattern } from "@/components/interactive-grid-pattern"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
+      {/* Interactive Grid Background */}
+      <div className="absolute inset-0 w-screen h-screen flex items-center justify-center">
+        <InteractiveGridPattern
+          className="opacity-30 w-screen [mask-image:radial-gradient(ellipse_at_center,_black_0%,_black_25%,_rgba(0,0,0,0.5)_40%,_transparent_75%)]"
+          width={40}
+          height={40}
+          squares={[48, 32]}
+          squaresClassName="hover:fill-purple-500/30 dark:hover:fill-purple-400/30 transition-all duration-200"
+          allowInteractive={true}
+        />
+      </div>
+
       {/* Theme Toggle */}
       <ThemeToggle />
 
       {/* Hero Section */}
-      <div className="pt-12 pb-8 px-6">
+      <div className="pt-12 pb-8 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-6 border border-blue-200 dark:border-blue-800">
@@ -47,12 +60,12 @@ export default function Home() {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-6 pb-20 max-w-6xl">
+      <div className="container mx-auto px-6 pb-20 max-w-6xl relative z-10">
         <FlippitSearchTable />
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <footer className="border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 relative z-10">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="text-center">
             <p className="text-gray-600 dark:text-gray-400">
