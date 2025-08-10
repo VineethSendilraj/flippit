@@ -45,4 +45,3 @@ app.listen(PORT, () => {
   console.log(`🚀 Flippit Backend running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
 });
-
