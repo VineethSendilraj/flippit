@@ -102,7 +102,7 @@ app.post('/api/call', async (req: Request, res: Response) => {
         customer: {
           number: '+19455239319'
         },
-        phoneNumberId: '82126eaa-ed35-4510-b1f2-5ec2b8283729'
+        phoneNumberId: 'aa348139-053f-43c2-b7b5-923304120418'
       })
     });
 
@@ -137,7 +137,7 @@ export default app;
 if (process.env.NODE_ENV !== 'production' && require.main === module) {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
-    console.log(`🚀 Flippit Backend running on http://localhost:${PORT}`);
+    console.log(`🚀 Backend running on http://localhost:${PORT}`);
     console.log(`📞 VAPI Call endpoint: http://localhost:${PORT}/api/call`);
     console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
   });
