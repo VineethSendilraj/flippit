@@ -18,7 +18,7 @@ const VAPI_PRIVATE_KEY = '183f4df8-2934-4f53-809c-01c8dc655573';
 app.get('/', (req: Request, res: Response) => {
   res.json({ 
     status: 'OK', 
-    message: 'ArbiAI Backend API is running',
+    message: 'Flippit API is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -26,7 +26,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ 
     status: 'OK', 
-    message: 'ArbiAI Backend API is healthy',
+    message: 'Flippit Backend API is healthy',
     timestamp: new Date().toISOString()
   });
 });
@@ -137,7 +137,7 @@ export default app;
 if (process.env.NODE_ENV !== 'production' && require.main === module) {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
-    console.log(`🚀 ArbiAI Backend running on http://localhost:${PORT}`);
+    console.log(`🚀 Flippit Backend running on http://localhost:${PORT}`);
     console.log(`📞 VAPI Call endpoint: http://localhost:${PORT}/api/call`);
     console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
   });

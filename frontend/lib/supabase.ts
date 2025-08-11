@@ -5,7 +5,7 @@ function getSupabaseUrl(): string {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
   if (!url) {
     // Return a placeholder URL for build time
-    return ""
+    return "https://xpuwkidotxibgucnsxmg.supabase.co"
   }
   return url
 }
@@ -14,7 +14,7 @@ function getSupabaseAnonKey(): string {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
   if (!key) {
     // Return a placeholder key for build time
-    return ""
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwdXdraWRvdHhpYmd1Y25zeG1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2NjQ0NTgsImV4cCI6MjA2NDI0MDQ1OH0.NQuMB5qENF6MX4yQotQlKprEKGiEnwF8QTK2AFaVspE"
   }
   return key
 }
